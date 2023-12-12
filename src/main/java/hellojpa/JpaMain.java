@@ -26,10 +26,10 @@ public class JpaMain {
             em.persist(member);
             System.out.println("=== before ===");
 
-            //준영속 상태, 회원 엔티티를 영속성 컨텍스트에서 분리
-//            em.detach(member);
-            //삭제 상태, 객체를 삭제한 상태(삭제)
-//            em.remove(member);
+            Member findMember = em.find(Member.class, 100L);
+
+            System.out.println("findMember.getId() = " + findMember.getId());
+            System.out.println("findMember.name() = " + findMember.getName());
 
             // 트랜잭션을 커밋하는 시점에 DB에 쿼리가 날라간다
             tx.commit();
