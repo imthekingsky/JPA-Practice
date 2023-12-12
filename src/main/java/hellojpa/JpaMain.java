@@ -15,12 +15,24 @@ public class JpaMain {
         tx.begin();
 
         try {
-//            Member findmember = em.find(Member.class, 1L);
-            List<Member> result = em.createQuery("select m from Member as m", Member.class)
-                    .getResultList();
-            for (Member member : result) {
-                System.out.println("member.name = " + member.getName());
-            }
+
+            // 비영속
+            Member member = new Member();
+            member.setId(100L);
+            member.setName("HelloJPA");
+
+            // 영속
+            System.out.println("=== before ===");
+            em.persist(member);
+            System.out.println("=== before ===");
+
+            //준영속 상태, 회원 엔티티를 영속성 컨텍스트에서 분리
+//            em.detach(member);
+            //삭제 상태, 객체를 삭제한 상태(삭제)
+//            em.remove(member);
+
+            // 트랜잭션을 커밋하는 시점에 DB에 쿼리가 날라간다
+            tx.commit();
         } catch (Exception e){
             tx.rollback();
         } finally {
