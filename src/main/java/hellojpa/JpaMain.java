@@ -16,13 +16,11 @@ public class JpaMain {
 
         try {
 
-            Member member1 = new Member(150L,"A");
-            Member member2 = new Member(160L,"B");
+            Member member = em.find(Member.class, 150L);
+            member.setName("ZZZZ");
 
-            em.persist(member1);
-            em.persist(member2);
-            // 여기까지 영속성 컨텍스트에 엔티티와 쿼리가 차곡 차곡 쌓인다.
-            System.out.println("=====================");
+//            JPA를 통해서 엔티티를를 가져오면 관리를 한다 그리고 트랜잭션을 커밋 하기 직전에 변경이(스냅샷과 비교) 되었으면 업데이트 커리를 날리고 커밋을 한다.
+//            em.persist(member); 따라서 persist를 할 필요가 없다
 
             // 트랜잭션을 커밋하는 시점에 DB에 쿼리가 날라간다
             tx.commit();
