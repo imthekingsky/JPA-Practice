@@ -1,5 +1,6 @@
 package hellojpa;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 
@@ -8,7 +9,9 @@ public class Member {
 
     @Id // JPA에게 PK가 뭔지 알려준다
     private Long id;
+    @Column(unique = true, length = 10)
     private String name;
+    private int age;
 
     // JPA는 기본 생성자가 있어야 한다.
     public Member(){}
