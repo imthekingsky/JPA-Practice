@@ -24,15 +24,23 @@ public class JpaMain {
             //회원 저장
             Member member = new Member();
             member.setUsername("member1");
-            member.setTeam(team); //단방향 연관관계 설정, 참조 저장
+//            member.changeTeam(team); // 연관관계의 주인에 값 설정 + 연관관계 편의 메서드
             em.persist(member);
 
-            //조회
-            Member findMember = em.find(Member.class, member.getId());
-            
-            //참조를 사용해서 연관관계 조회
-            Team findTeam = findMember.getTeam();
-            System.out.println("findTeam.getName() = " + findTeam.getName());
+            team.addMember(member); // 연관관계의 주인에 값 설정 + 연관관계 편의 메서드
+
+            em.flush();
+            em.clear();
+
+            Team findTeam = em.find(Team.class, team.getId());
+            List<Member> members = findTeam.getMembers();
+
+            System.out.println("=============== ");
+            for (Member m : members) {
+                System.out.println("m.getUsername() = " + m.getUsername()); // 이때 Member select 쿼리 날라가는듯
+            }
+            System.out.println("=============== ");
+
 
             tx.commit();
         } catch (Exception e){
