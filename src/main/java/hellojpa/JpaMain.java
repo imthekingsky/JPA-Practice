@@ -16,25 +16,26 @@ public class JpaMain {
         tx.begin();
 
         try {
-            
-            Team team = new Team();
-            team.setName("teamA");
-            em.persist(team);
 
-            Member member = new Member();
-            member.setUsername("member1");
-            member.setTeam(team);
-            em.persist(member);
-            
-//            team.addMember(member);
+            Child child1 = new Child();
+            Child child2 = new Child();
+
+            Parent parent = new Parent();
+            parent.addChild(child1);
+            parent.addChild(child2);
+
+            em.persist(parent); // 부모만 persist
+//            em.persist(child1); //CascadeType.ALL
+//            em.persist(child2); //CascadeType.ALL
 
             em.flush();
             em.clear();
 
-            Member m1 = em.getReference(Member.class, member.getId());
-            System.out.println("m1.getTeam().getClass() = " + m1.getTeam().getClass());
+            Parent findParent = em.find(Parent.class, parent.getId());
+            em.remove(findParent); // 부모만 remove 하면 자식도 remove
+//            findParent.getChildList().remove(0); // orphanRemoval = true
 
-            m1.getTeam().getName(); // 이때 (사용할 때) 초기화
+            // 주의 : • 참조하는 곳이 하나일 때 사용해야함!, 특정 엔티티가 개인 소유할 때 사용
 
             tx.commit();
         } catch (Exception e){
