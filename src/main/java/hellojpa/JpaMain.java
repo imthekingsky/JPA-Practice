@@ -16,23 +16,25 @@ public class JpaMain {
         tx.begin();
 
         try {
+            
+            Team team = new Team();
+            team.setName("teamA");
+            em.persist(team);
 
             Member member = new Member();
             member.setUsername("member1");
+            member.setTeam(team);
             em.persist(member);
+            
+//            team.addMember(member);
 
             em.flush();
             em.clear();
 
             Member m1 = em.getReference(Member.class, member.getId());
-            System.out.println("m1.getClass() = " + m1.getClass()); // Proxy
+            System.out.println("m1.getTeam().getClass() = " + m1.getTeam().getClass());
 
-            em.detach(m1); // 준영속 상태
-
-            System.out.println("m1 = " + m1.getUsername()); // 에러발생
-
-
-
+            m1.getTeam().getName(); // 이때 (사용할 때) 초기화
 
             tx.commit();
         } catch (Exception e){
