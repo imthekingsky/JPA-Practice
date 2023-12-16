@@ -17,25 +17,12 @@ public class JpaMain {
 
         try {
 
-            Child child1 = new Child();
-            Child child2 = new Child();
+            Member member = new Member();
+            member.setUsername("hello");
+            member.setHomeAddress(new Address("city", "street", "zipcode"));
+            member.setWorkPeriod(new Period());
 
-            Parent parent = new Parent();
-            parent.addChild(child1);
-            parent.addChild(child2);
-
-            em.persist(parent); // 부모만 persist
-//            em.persist(child1); //CascadeType.ALL
-//            em.persist(child2); //CascadeType.ALL
-
-            em.flush();
-            em.clear();
-
-            Parent findParent = em.find(Parent.class, parent.getId());
-            em.remove(findParent); // 부모만 remove 하면 자식도 remove
-//            findParent.getChildList().remove(0); // orphanRemoval = true
-
-            // 주의 : • 참조하는 곳이 하나일 때 사용해야함!, 특정 엔티티가 개인 소유할 때 사용
+            em.persist(member);
 
             tx.commit();
         } catch (Exception e){
