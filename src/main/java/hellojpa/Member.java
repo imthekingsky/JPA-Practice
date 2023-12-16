@@ -18,11 +18,6 @@ public class Member extends BaseEntity{
     @JoinColumn(name = "TEAM_ID")
     private Team team;
 
-    @OneToOne
-    @JoinColumn(name = "LOCKER_ID")
-    private Locker locker;
-
-
 
     // JPA는 기본 생성자가 있어야 한다.
     public Member(){}
