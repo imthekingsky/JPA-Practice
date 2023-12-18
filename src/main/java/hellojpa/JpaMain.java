@@ -4,6 +4,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.EntityTransaction;
 import javax.persistence.Persistence;
+import java.time.LocalDateTime;
 import java.util.List;
 
 public class JpaMain {
@@ -15,14 +16,17 @@ public class JpaMain {
         tx.begin();
 
         try {
-//            Member findmember = em.find(Member.class, 1L);
-            List<Member> result = em.createQuery("select m from Member as m", Member.class)
-                    .getResultList();
-            for (Member member : result) {
-                System.out.println("member.name = " + member.getName());
-            }
+
+            Address address1 = new Address("city", "street", "zipcode");
+            Address address2 = new Address("city", "street", "zipcode");
+
+            System.out.println("address1 == address2 = " + (address1 == address2));
+            System.out.println("address2.equals(address2) = " + address2.equals(address2)); // equals 오버라이딩
+            
+            tx.commit();
         } catch (Exception e){
             tx.rollback();
+            e.printStackTrace();
         } finally {
             em.close();
         }
